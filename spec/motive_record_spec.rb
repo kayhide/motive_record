@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe MotiveRecord do
   it 'has a version number' do
     expect(MotiveRecord::VERSION).not_to be nil
