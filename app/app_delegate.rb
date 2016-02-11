@@ -3,3 +3,5 @@ class AppDelegate
     true
   end
 end
+
+ActiveRecord::Schema

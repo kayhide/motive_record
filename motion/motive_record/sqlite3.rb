@@ -1,0 +1,1 @@
+require 'active_record/connection_adapters/sqlite3_adapter'

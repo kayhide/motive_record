@@ -21,11 +21,16 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'motion_blender'
   spec.add_runtime_dependency 'motive_support'
-  spec.add_runtime_dependency 'activerecord', '~> 4.2'
+  spec.add_runtime_dependency 'motive_model'
+  spec.add_runtime_dependency 'motion-securerandom'
+  spec.add_runtime_dependency 'activerecord', '= 4.2.5'
+  spec.add_runtime_dependency 'motion.h'
+  spec.add_runtime_dependency 'sqlite3'
   spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-doc'
   spec.add_development_dependency 'motion-redgreen'
+  spec.add_development_dependency 'motion-stump'
+  spec.add_development_dependency 'motion_print'
 end
