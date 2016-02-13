@@ -24,6 +24,7 @@ require 'active_record/relation/delegation'
 require 'active_record/attributes'
 
 require 'active_record/attribute_methods'
+require 'active_record/associations'
 require 'active_record/relation/delegate_cache'
 
 module ActiveRecord
