@@ -1,0 +1,22 @@
+module Arel
+  module Nodes
+    class NamedFunction < Arel::Nodes::Function
+      attr_accessor :name
+
+      def initialize name, expr, aliaz = nil
+        super(expr, aliaz)
+        @name = name
+      end
+
+      def hash
+        super ^ @name.hash
+      end
+
+      def eql? other
+        super && self.name == other.name
+      end
+      # alias :== :eql?
+      def == arg; eql? arg; end
+    end
+  end
+end
