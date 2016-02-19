@@ -44,9 +44,17 @@ describe MotiveRecord do
       Book.count.should == 2
     end
 
-    it 'first/last' do
-      Book.first.should == nil
-      Book.last.should == nil
+    describe '.first/last' do
+      it 'returns nil if no record exists' do
+        Book.first.should == nil
+        Book.last.should == nil
+      end
+
+      it 'returns first/last object' do
+        books = Book.create(3.times.map { |i| { title: "Book #{i}" } })
+        Book.first.should == books.first
+        Book.last.should == books.last
+      end
     end
   end
 end
