@@ -50,12 +50,24 @@ describe MotiveRecord do
         Book.last.should == nil
       end
 
-      it 'returns first/last object' do
+      it 'returns first/last model object' do
         books = Book.create(3.times.map { |i| { title: "Book #{i}" } })
         Book.first.should == books.first
         Book.last.should == books.last
       end
     end
+
+    describe '.find' do
+      it 'returns model object' do
+        book = Book.create id: 123
+        Book.find(123).should == book
+      end
+
+      it 'fails if not found' do
+        lambda {
+          Book.find(123)
+        }.should.raise ActiveRecord::RecordNotFound
+      end
+    end
   end
 end
-
