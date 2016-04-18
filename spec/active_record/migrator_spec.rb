@@ -6,7 +6,7 @@ describe ActiveRecord::Migrator do
 
     describe '#migrate' do
       it 'migrates with migration files' do
-        dir = File.join(NSBundle.mainBundle.resourcePath, 'migrate')
+        dir = File.join(NSBundle.mainBundle.resourcePath, 'migrate/books')
         ActiveRecord::Migrator.migrate dir
         ActiveRecord::SchemaMigration.count.should == 1
       end
@@ -18,7 +18,7 @@ describe ActiveRecord::Migrator do
 
     describe '#migrate' do
       it 'migrates with migration files' do
-        dir = File.join(NSBundle.mainBundle.resourcePath, 'migrate')
+        dir = File.join(NSBundle.mainBundle.resourcePath, 'migrate/books')
         ActiveRecord::Migrator.migrate dir
         ActiveRecord::SchemaMigration.count.should == 1
       end

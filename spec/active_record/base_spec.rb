@@ -1,22 +1,14 @@
 describe ActiveRecord::Base do
   suppress_migration_output
   use_database :memory
-
-  before do
-    ActiveRecord::Schema.define(version: 1) do
-      create_table :books do |t|
-        t.string :title
-        t.timestamps null: false
-      end
-    end
-  end
+  use_migration :books
 
   describe '.create' do
     it 'creates' do
       Book.count.should == 0
-      Book.create
+      Book.create title: 'Book 1'
       Book.count.should == 1
-      Book.create!
+      Book.create! title: 'Book 2'
       Book.count.should == 2
     end
   end
@@ -42,7 +34,7 @@ describe ActiveRecord::Base do
 
   describe '.find' do
     it 'returns model object' do
-      book = Book.create id: 123
+      book = Book.create id: 123, title: 'Book 123'
       Book.find(123).should == book
     end
 

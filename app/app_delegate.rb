@@ -4,4 +4,6 @@ class AppDelegate
   end
 end
 
-ActiveRecord::Schema
+if RUBYMOTION_ENV == 'development'
+  ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'development.sqlite')
+end
