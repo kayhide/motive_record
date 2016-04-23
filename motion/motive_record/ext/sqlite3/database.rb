@@ -1,8 +1,15 @@
 module SQLite3
   class Database
     def initialize file, options = {}
+      mode =
+        if options[:readonly]
+          SQLITE_OPEN_READONLY
+        else
+          SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE
+        end
+
       @handle = Pointer.new(::Sqlite3.type)
-      status = sqlite3_open(file, @handle)
+      status = sqlite3_open_v2(file, @handle, mode, nil)
       Exception.check get, status
 
       @tracefunc = nil
@@ -11,9 +18,9 @@ module SQLite3
       @busy_handler = nil
       @collations = {}
       @functions = {}
-      @results_as_hash = options[:result_as_hash]
+      @results_as_hash = options[:results_as_hash]
       @type_translation = options[:type_translation]
-      @readonly = false
+      @readonly = mode == SQLITE_OPEN_READONLY
     end
 
     def get

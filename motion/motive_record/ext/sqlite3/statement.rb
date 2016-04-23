@@ -5,9 +5,9 @@ module SQLite3
 
       sql.encode!(Encoding::UTF_8) if sql.encoding != Encoding::UTF_8
 
-      @handler = Pointer.new(::Sqlite3_stmt.type)
+      @handle = Pointer.new(::Sqlite3_stmt.type)
       tail = Pointer.new('*')
-      status = sqlite3_prepare(db.get, sql, sql.bytesize, @handler, tail)
+      status = sqlite3_prepare_v2(db.get, sql, sql.bytesize, @handle, tail)
       Exception.check(db.get, status)
 
       @connection = db
@@ -18,12 +18,14 @@ module SQLite3
     end
 
     def get
-      @handler.value
+      @handle.value
     end
 
     def close
-      stmt = get
+      require_open_statement
       status = sqlite3_finalize get
+      Exception.check(sqlite3_db_handle(get), status)
+
       @handle = Pointer.new(::Sqlite3_stmt.type)
       self
     end
@@ -86,7 +88,7 @@ module SQLite3
           key.to_i
         end
 
-      fail SQLite3::Exception, 'no such bind parameter' if index == 0
+      fail Exception, 'no such bind parameter' if index == 0
 
       status =
         case value
@@ -143,7 +145,7 @@ module SQLite3
     private
 
     def require_open_statement
-      fail SQLite3::Exception, 'cannot use a closed statement' if closed?
+      fail Exception, 'cannot use a closed statement' if closed?
     end
   end
 end
