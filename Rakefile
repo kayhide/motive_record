@@ -1,21 +1,24 @@
-$:.unshift("/Library/RubyMotion/lib")
-require 'motion/project/template/ios'
 require "bundler/gem_tasks"
-Bundler.require
 
-require 'motive_support/all'
-require 'motion-redgreen'
-require 'motion-stump'
-require 'motion_print'
+if (Rake.application.top_level_tasks - Rake.application.tasks.map(&:name)).any?
+  $:.unshift("/Library/RubyMotion/lib")
+  require 'motion/project/template/ios'
+  Bundler.require
 
-MotionBlender.config.excepted_files << 'fiddle/import'
-MotionBlender.config.excepted_files << 'socket'
+  require 'motive_support/all'
+  require 'motion-redgreen'
+  require 'motion-stump'
+  require 'motion_print'
 
-Motion::Project::App.setup do |app|
-  app.name = 'MotiveRecord'
-  app.redgreen_style = :progress
+  MotionBlender.config.excepted_files << 'fiddle/import'
+  MotionBlender.config.excepted_files << 'socket'
 
-  if app.spec_mode
-    require File.join(app.specs_dir, 'helpers/_init')
+  Motion::Project::App.setup do |app|
+    app.name = 'MotiveRecord'
+    app.redgreen_style = :progress
+
+    if app.spec_mode
+      require File.join(app.specs_dir, 'helpers/_init')
+    end
   end
 end
