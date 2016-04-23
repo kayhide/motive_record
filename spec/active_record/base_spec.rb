@@ -62,6 +62,20 @@ describe ActiveRecord::Base do
       arel.should.be.kind_of ActiveRecord::Relation
       arel.to_a.should == books
     end
+
+    it 'works with range' do
+      now = Time.current
+      books = [
+        Book.create(title: 'Book 1', created_at: now),
+        Book.create(title: 'Book 2', created_at: now)
+      ]
+      Book.create(title: 'Book 3', created_at: now - 1.month)
+      Book.create(title: 'Book 4', created_at: now + 1.month)
+      range = 1.day.ago..1.day.since
+      arel = Book.where(created_at: range)
+      arel.should.be.kind_of ActiveRecord::Relation
+      arel.to_a.should == books
+    end
   end
 
   describe '.order' do
@@ -103,6 +117,18 @@ describe ActiveRecord::Base do
       arel = Book.offset(1)
       arel.should.be.kind_of ActiveRecord::Relation
       arel.to_a.should == books.drop(1)
+    end
+  end
+
+  describe '.count' do
+    it 'returns count' do
+      Book.create(3.times.map { |i| { title: "Book #{i}" } })
+      Book.count.should == 3
+    end
+
+    it 'works with where' do
+      Book.create(3.times.map { |i| { title: "Book #{i}" } })
+      Book.where(title: ['Book 1', 'Book 2']).count.should == 2
     end
   end
 
