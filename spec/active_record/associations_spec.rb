@@ -73,4 +73,49 @@ describe ActiveRecord::Associations do
       end
     end
   end
+
+  describe '.belongs_to' do
+    before do
+      @book = Book.create title: 'Book 1'
+      @chapter = @book.chapters.create title: 'Chapter 1'
+    end
+
+    describe 'reader' do
+      it 'returns model object' do
+        @chapter.book.should == @book
+      end
+    end
+
+    describe 'writer' do
+      it 'replaces reference id' do
+        new_book = Book.create title: 'New Book'
+        @chapter.book = new_book
+        @chapter.book_id.should == new_book.id
+      end
+    end
+
+    describe 'initializer' do
+      it 'accepts model object' do
+        chapter = Chapter.new book: @book
+        chapter.book_id.should == @book.id
+      end
+    end
+
+    describe 'query' do
+      it 'accepts model object' do
+        Chapter.where(book: @book).should == [@chapter]
+      end
+
+      it 'accepts model id' do
+        Chapter.where(book: @book.id).should == [@chapter]
+      end
+
+      it 'accepts array of model objects and ids' do
+        new_book = Book.create title: 'New Book'
+        new_chapter = new_book.chapters.create title: 'New Chpater'
+        Chapter.where(book: [@book, new_book.id]).sort.
+          should == [@chapter, new_chapter]
+      end
+    end
+  end
 end
