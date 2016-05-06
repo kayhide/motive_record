@@ -1,35 +1,16 @@
 Module.new do
-  def use_database database
-    if database == :memory
-      before do
-        database = ':memory:'
-        ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: database)
-      end
-
-      after do
-        ActiveRecord::Base.clear_all_connections!
-      end
-    else
-      before do
-        support_dir = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, true).first
-        database = File.expand_path(database, support_dir)
-        File.delete database if File.exist? database
-        ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: database)
-      end
-
-      after do
-        ActiveRecord::Base.clear_all_connections!
-        database = ActiveRecord::Base.connection_config[:database]
-        File.delete database if File.exist? database
+  def use_database database = 'test.sqlite3'
+    after do
+      (ActiveRecord::Base.descendants - [ActiveRecord::SchemaMigration]).each do |model|
+        model.delete_all
       end
     end
   end
 
-  def use_migration name, &proc
-    before do
-      dir = File.join(NSBundle.mainBundle.resourcePath, 'migrate', name.to_s)
-      ActiveRecord::Migrator.migrate dir
-    end
-  end
   Bacon::Context.send :include, self
 end
+
+database = 'test.sqlite3'
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: database)
+dir = File.join(NSBundle.mainBundle.resourcePath, 'migrate/books')
+ActiveRecord::Migrator.migrate dir

@@ -1,7 +1,5 @@
 describe ActiveRecord::Base do
-  suppress_migration_output
-  use_database :memory
-  use_migration :books
+  use_database
 
   describe '.create' do
     it 'creates' do
