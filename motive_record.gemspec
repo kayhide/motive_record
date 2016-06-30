@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['kayhide']
   spec.email         = ['kayhide@gmail.com']
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = 'ActiveRecord for RubyMotion.'
+  spec.description   = 'ActiveRecord for RubyMotion. Directly importing original implementations using MotionBlender.'
   spec.homepage      = 'https://github.com/kayhide/motive_record'
   spec.license       = 'MIT'
 
